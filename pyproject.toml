@@ -38,8 +38,10 @@ dependencies = [
 tests = [
     "pytest~=8.3.3",
     "pytest-cov~=5.0.0",
-    "codecov",
-    "ruff~=0.7.0",
+]
+
+style = [
+  "ruff~=0.7.0",
 ]
 
 [tool.ruff]
@@ -58,28 +60,6 @@ ignore = [
     "F821",
     "E721",
 ]
-
-#[tool.tox]
-#env_list = [
-#    "pytest",
-#    "style",
-#    "3.8",
-#    "3.9",
-#    "3.10",
-#    "3.11",
-#    "3.12",
-#    "3.13",
-#]
-#
-#[tool.tox.env.pytest]
-#commands = [["bash", "tests.sh"]]
-#allowlist_externals = ["bash"]
-#
-#[tool.tox.env.style]
-#deps = ["ruff~=0.7.0"]
-#commands = [["ruff", "check"]]
-#allowlist_externals = ["ruff"]
-#
 
 [tool.pytest.ini_options]
 testpaths = [
