@@ -22,6 +22,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install .
+          pip install pytest pytest-cov
       - name: Run tests
         run: ./tests.sh
       - name: Upload coverage to Codecov
