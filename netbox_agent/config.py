@@ -21,12 +21,8 @@ def get_config():
     )
     p.add_argument("-c", "--config", action=jsonargparse.ActionConfigFile)
 
-    p.add_argument(
-        "-r", "--register", action="store_true", help="Register server to Netbox"
-    )
-    p.add_argument(
-        "-u", "--update-all", action="store_true", help="Update all infos in Netbox"
-    )
+    p.add_argument("-r", "--register", action="store_true", help="Register server to Netbox")
+    p.add_argument("-u", "--update-all", action="store_true", help="Update all infos in Netbox")
     p.add_argument("-d", "--debug", action="store_true", help="Print debug infos")
     p.add_argument("--update-network", action="store_true", help="Update network")
     p.add_argument("--update-inventory", action="store_true", help="Update inventory")
@@ -58,9 +54,7 @@ def get_config():
         action="store_true",
         help="Disable SSL verification",
     )
-    p.add_argument(
-        "--virtual.enabled", action="store_true", help="Is a virtual machine or not"
-    )
+    p.add_argument("--virtual.enabled", action="store_true", help="Is a virtual machine or not")
     p.add_argument("--virtual.cluster_name", help="Cluster name of VM")
     p.add_argument(
         "--hostname_cmd",
@@ -83,17 +77,13 @@ def get_config():
         default=r"",
         help="custom_fields to use for a host, eg: field1=v1,field2=v2",
     )
-    p.add_argument(
-        "--device.blade_role", default=r"Blade", help="role to use for a blade server"
-    )
+    p.add_argument("--device.blade_role", default=r"Blade", help="role to use for a blade server")
     p.add_argument(
         "--device.chassis_role",
         default=r"Server Chassis",
         help="role to use for a chassis",
     )
-    p.add_argument(
-        "--device.server_role", default=r"Server", help="role to use for a server"
-    )
+    p.add_argument("--device.server_role", default=r"Server", help="role to use for a server")
     p.add_argument("--tenant.driver", help="tenant driver, ie cmd, file")
     p.add_argument("--tenant.driver_file", help="tenant driver custom driver file path")
     p.add_argument("--tenant.regex", help="tenant regex to extract Netbox tenant slug")
@@ -109,19 +99,11 @@ def get_config():
         help="Datacenter location regex to extract Netbox DC slug",
     )
     p.add_argument("--rack_location.driver", help="Rack location driver, ie: cmd, file")
-    p.add_argument(
-        "--rack_location.driver_file", help="Rack location custom driver file path"
-    )
-    p.add_argument(
-        "--rack_location.regex", help="Rack location regex to extract Rack name"
-    )
+    p.add_argument("--rack_location.driver_file", help="Rack location custom driver file path")
+    p.add_argument("--rack_location.regex", help="Rack location regex to extract Rack name")
     p.add_argument("--slot_location.driver", help="Slot location driver, ie: cmd, file")
-    p.add_argument(
-        "--slot_location.driver_file", help="Slot location custom driver file path"
-    )
-    p.add_argument(
-        "--slot_location.regex", help="Slot location regex to extract slot name"
-    )
+    p.add_argument("--slot_location.driver_file", help="Slot location custom driver file path")
+    p.add_argument("--slot_location.regex", help="Slot location regex to extract slot name")
     p.add_argument(
         "--network.ignore_interfaces",
         default=r"(dummy.*|docker.*)",
@@ -132,12 +114,8 @@ def get_config():
         default=r"^(127\.0\.0\..*|fe80.*|::1.*)",
         help="Regex to ignore IPs",
     )
-    p.add_argument(
-        "--network.ipmi", default=True, help="Enable gathering IPMI information"
-    )
-    p.add_argument(
-        "--network.lldp", help="Enable auto-cabling feature through LLDP infos"
-    )
+    p.add_argument("--network.ipmi", default=True, help="Enable gathering IPMI information")
+    p.add_argument("--network.lldp", help="Enable auto-cabling feature through LLDP infos")
     p.add_argument(
         "--inventory",
         action="store_true",
@@ -154,9 +132,7 @@ def get_config():
         action="store_true",
         help="Forces disks detection reprocessing",
     )
-    p.add_argument(
-        "--dump-disks-map", help="File path to dump physical/virtual disks map"
-    )
+    p.add_argument("--dump-disks-map", help="File path to dump physical/virtual disks map")
 
     options = p.parse_args()
     return options

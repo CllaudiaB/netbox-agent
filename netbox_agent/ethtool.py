@@ -63,9 +63,7 @@ class Ethtool:
         return fields
 
     def _parse_ethtool_module_output(self):
-        status, output = subprocess.getstatusoutput(
-            "ethtool -m {}".format(self.interface)
-        )
+        status, output = subprocess.getstatusoutput("ethtool -m {}".format(self.interface))
         if status == 0:
             r = re.search(r"Identifier.*\((\w+)\)", output)
             if r and len(r.groups()) > 0:

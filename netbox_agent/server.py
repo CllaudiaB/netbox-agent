@@ -9,8 +9,12 @@ from netbox_agent.config import config
 from netbox_agent.config import netbox_instance as nb
 from netbox_agent.inventory import Inventory
 from netbox_agent.location import Datacenter, Rack, Tenant
-from netbox_agent.misc import (create_netbox_tags, get_device_platform, get_device_role,
-                               get_device_type)
+from netbox_agent.misc import (
+    create_netbox_tags,
+    get_device_platform,
+    get_device_role,
+    get_device_type,
+)
 from netbox_agent.network import ServerNetwork
 from netbox_agent.power import PowerSupply
 
@@ -36,17 +40,10 @@ class ServerBase:
             else []
         )
         self.nb_tags = list(create_netbox_tags(self.tags))
-        config_cf = set(
-            [f.strip() for f in config.device.custom_fields.split(",") if f.strip()]
-        )
+        config_cf = set([f.strip() for f in config.device.custom_fields.split(",") if f.strip()])
         self.custom_fields = {}
         self.custom_fields.update(
-            dict(
-                [
-                    (k.strip(), v.strip())
-                    for k, v in [f.split("=", 1) for f in config_cf]
-                ]
-            )
+            dict([(k.strip(), v.strip()) for k, v in [f.split("=", 1) for f in config_cf]])
         )
 
     def get_tenant(self):
@@ -303,9 +300,7 @@ class ServerBase:
 
     def _netbox_set_or_update_blade_slot(self, server, chassis, datacenter):
         # before everything check if right chassis
-        actual_device_bay = (
-            server.parent_device.device_bay if server.parent_device else None
-        )
+        actual_device_bay = server.parent_device.device_bay if server.parent_device else None
         actual_chassis = actual_device_bay.device if actual_device_bay else None
         slot = self.get_blade_slot()
         if (
@@ -345,13 +340,9 @@ class ServerBase:
         else:
             logging.error("Could not find slot {slot} for chassis".format(slot=slot))
 
-    def _netbox_set_or_update_blade_expansion_slot(
-        self, expansion, chassis, datacenter
-    ):
+    def _netbox_set_or_update_blade_expansion_slot(self, expansion, chassis, datacenter):
         # before everything check if right chassis
-        actual_device_bay = (
-            expansion.parent_device.device_bay if expansion.parent_device else None
-        )
+        actual_device_bay = expansion.parent_device.device_bay if expansion.parent_device else None
         actual_chassis = actual_device_bay.device if actual_device_bay else None
         slot = self.get_blade_expansion_slot()
         if (
@@ -366,9 +357,7 @@ class ServerBase:
             name=slot,
         )
         if not real_device_bays:
-            logging.error(
-                "Could not find slot {slot} expansion for chassis".format(slot=slot)
-            )
+            logging.error("Could not find slot {slot} expansion for chassis".format(slot=slot))
             return
         logging.info(
             "Setting device expansion ({serial}) new slot on {slot} "
@@ -450,14 +439,10 @@ class ServerBase:
         if self.own_expansion_slot() and config.expansion_as_device:
             logging.debug("Update Server expansion...")
             if not expansion:
-                expansion = self._netbox_create_blade_expansion(
-                    chassis, datacenter, tenant, rack
-                )
+                expansion = self._netbox_create_blade_expansion(chassis, datacenter, tenant, rack)
 
             # set slot for blade expansion
-            self._netbox_set_or_update_blade_expansion_slot(
-                expansion, chassis, datacenter
-            )
+            self._netbox_set_or_update_blade_expansion_slot(expansion, chassis, datacenter)
             if update_inventory:
                 # Updates expansion inventory
                 inventory = Inventory(server=self, update_expansion=True)

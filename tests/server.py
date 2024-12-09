@@ -79,9 +79,7 @@ def test_generic_host_product_name(fixture):
     assert server.get_product_name() == "SR"
 
 
-@parametrize_with_fixtures(
-    "dmidecode/", only_filenames=["HP_ProLiant_BL460c_Gen10_Graphics_Exp"]
-)
+@parametrize_with_fixtures("dmidecode/", only_filenames=["HP_ProLiant_BL460c_Gen10_Graphics_Exp"])
 def test_hp_blade_with_gpu_expansion(fixture):
     dmi = parse(fixture)
     server = HPHost(dmi)

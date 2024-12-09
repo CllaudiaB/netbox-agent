@@ -52,9 +52,7 @@ class Network(object):
             if config.network.ignore_interfaces and re.match(
                 config.network.ignore_interfaces, interface
             ):
-                logging.debug(
-                    "Ignore interface {interface}".format(interface=interface)
-                )
+                logging.debug("Ignore interface {interface}".format(interface=interface))
                 continue
 
             ip_addr = netifaces.ifaddresses(interface).get(netifaces.AF_INET, [])
@@ -87,12 +85,8 @@ class Network(object):
                 addr["mask"] = addr["mask"].split("/")[0]
                 ip_addr.append(addr)
 
-            mac = (
-                open("/sys/class/net/{}/address".format(interface), "r").read().strip()
-            )
-            mtu = int(
-                open("/sys/class/net/{}/mtu".format(interface), "r").read().strip()
-            )
+            mac = open("/sys/class/net/{}/address".format(interface), "r").read().strip()
+            mtu = int(open("/sys/class/net/{}/mtu".format(interface), "r").read().strip())
             vlan = None
             if len(interface.split(".")) > 1:
                 vlan = int(interface.split(".")[1])
@@ -102,9 +96,7 @@ class Network(object):
             if os.path.isdir("/sys/class/net/{}/bonding".format(interface)):
                 bonding = True
                 bonding_slaves = (
-                    open("/sys/class/net/{}/bonding/slaves".format(interface))
-                    .read()
-                    .split()
+                    open("/sys/class/net/{}/bonding/slaves".format(interface)).read().split()
                 )
 
             # Tun and TAP support
@@ -135,9 +127,7 @@ class Network(object):
         bonding_nics = (x for x in self.nics if x["bonding"])
         for nic in bonding_nics:
             bond_int = self.get_netbox_network_card(nic)
-            logging.debug(
-                "Setting slave interface for {name}".format(name=bond_int.name)
-            )
+            logging.debug("Setting slave interface for {name}".format(name=bond_int.name))
             for slave_int in (
                 self.get_netbox_network_card(slave_nic)
                 for slave_nic in self.nics
@@ -160,9 +150,7 @@ class Network(object):
 
     def get_netbox_network_card(self, nic):
         if nic["mac"] is None:
-            interface = self.nb_net.interfaces.get(
-                name=nic["name"], **self.custom_arg_id
-            )
+            interface = self.nb_net.interfaces.get(name=nic["name"], **self.custom_arg_id)
         else:
             interface = self.nb_net.interfaces.get(
                 mac_address=nic["mac"], name=nic["name"], **self.custom_arg_id
@@ -220,9 +208,7 @@ class Network(object):
     def reset_vlan_on_interface(self, nic, interface):
         update = False
         vlan_id = nic["vlan"]
-        lldp_vlan = (
-            self.lldp.get_switch_vlan(nic["name"]) if config.network.lldp else None
-        )
+        lldp_vlan = self.lldp.get_switch_vlan(nic["name"]) if config.network.lldp else None
         # For strange reason, we need to get the object from scratch
         # The object returned by pynetbox's save isn't always working (since pynetbox 6)
         interface = self.nb_net.interfaces.get(id=interface.id)
@@ -235,9 +221,7 @@ class Network(object):
             and (interface.mode is not None or len(interface.tagged_vlans) > 0)
         ):
             logging.info(
-                "Interface {interface} is not tagged, reseting mode".format(
-                    interface=interface
-                )
+                "Interface {interface} is not tagged, reseting mode".format(interface=interface)
             )
             update = True
             interface.mode = None
@@ -251,16 +235,13 @@ class Network(object):
             or type(interface.mode) is not int
             and (
                 hasattr(interface.mode, "value")
-                and interface.mode.value
-                == self.dcim_choices["interface:mode"]["Access"]
+                and interface.mode.value == self.dcim_choices["interface:mode"]["Access"]
                 or len(interface.tagged_vlans) != 1
                 or int(interface.tagged_vlans[0].vid) != int(vlan_id)
             )
         ):
             logging.info(
-                "Resetting tagged VLAN(s) on interface {interface}".format(
-                    interface=interface
-                )
+                "Resetting tagged VLAN(s) on interface {interface}".format(interface=interface)
             )
             update = True
             nb_vlan = self.get_or_create_vlan(vlan_id)
@@ -277,9 +258,7 @@ class Network(object):
                 or interface.untagged_vlan.vid != int(pvid_vlan[0])
             ):
                 logging.info(
-                    "Resetting access VLAN on interface {interface}".format(
-                        interface=interface
-                    )
+                    "Resetting access VLAN on interface {interface}".format(interface=interface)
                 )
                 update = True
                 nb_vlan = self.get_or_create_vlan(pvid_vlan[0])
@@ -361,9 +340,7 @@ class Network(object):
             address=ip,
         )
         if not netbox_ips:
-            logging.info(
-                "Create new IP {ip} on {interface}".format(ip=ip, interface=interface)
-            )
+            logging.info("Create new IP {ip} on {interface}".format(ip=ip, interface=interface))
             query_params = {
                 "address": ip,
                 "status": "active",
@@ -390,9 +367,7 @@ class Network(object):
                 netbox_ip.save()
             # or if everything is assigned to other servers
             elif not len(assigned_anycast_ip):
-                logging.info(
-                    "Creating Anycast IP {} and assigning it to interface".format(ip)
-                )
+                logging.info("Creating Anycast IP {} and assigning it to interface".format(ip))
                 query_params = {
                     "address": ip,
                     "status": "active",
@@ -408,14 +383,11 @@ class Network(object):
             assigned_object = getattr(netbox_ip, "assigned_object", None)
             if not ip_interface or not assigned_object:
                 logging.info(
-                    "Assigning existing IP {ip} to {interface}".format(
-                        ip=ip, interface=interface
-                    )
+                    "Assigning existing IP {ip} to {interface}".format(ip=ip, interface=interface)
                 )
             elif (ip_interface and ip_interface.id != interface.id) or (
                 assigned_object and assigned_object_id != interface.id
             ):
-
                 old_interface = getattr(netbox_ip, "assigned_object", "n/a")
                 logging.info(
                     "Detected interface change for ip {ip}: old interface is "
@@ -483,9 +455,7 @@ class Network(object):
             interface = self.get_netbox_network_card(nic)
             if not interface:
                 logging.info(
-                    "Interface {mac_address} not found, creating..".format(
-                        mac_address=nic["mac"]
-                    )
+                    "Interface {mac_address} not found, creating..".format(mac_address=nic["mac"])
                 )
                 interface = self.create_netbox_nic(nic)
 
@@ -505,9 +475,7 @@ class Network(object):
             if hasattr(interface, "mtu"):
                 if nic["mtu"] != interface.mtu:
                     logging.info(
-                        "Interface mtu is wrong, updating to: {mtu}".format(
-                            mtu=nic["mtu"]
-                        )
+                        "Interface mtu is wrong, updating to: {mtu}".format(mtu=nic["mtu"])
                     )
                     interface.mtu = nic["mtu"]
                     nic_update += 1
@@ -573,9 +541,7 @@ class ServerNetwork(Network):
         ipmi = IPMI().parse()
         return ipmi
 
-    def connect_interface_to_switch(
-        self, switch_ip, switch_interface, nb_server_interface
-    ):
+    def connect_interface_to_switch(self, switch_ip, switch_interface, nb_server_interface):
         logging.info(
             "Interface {} is not connected to switch, trying to connect..".format(
                 nb_server_interface.name
@@ -609,9 +575,7 @@ class ServerNetwork(Network):
             name=switch_interface,
         )
         if nb_switch_interface is None:
-            logging.error(
-                "Switch interface {} cannot be found".format(switch_interface)
-            )
+            logging.error("Switch interface {} cannot be found".format(switch_interface))
             return nb_server_interface
 
         logging.info(

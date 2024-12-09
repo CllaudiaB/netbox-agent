@@ -25,10 +25,11 @@ jobs:
       - name: Run tests
         run: ./tests.sh
       - name: Lint with ruff
-        run: ruff check
+        run: |
+          ruff check
+          ruff format --diff netbox_agent tests
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
           files: ./coverage.xml
-          token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true

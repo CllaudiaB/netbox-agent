@@ -27,14 +27,10 @@ class LocationBase:
         if self.driver_file:
             try:
                 # FIXME: Works with Python 3.3+, support older version?
-                loader = importlib.machinery.SourceFileLoader(
-                    "driver_file", self.driver_file
-                )
+                loader = importlib.machinery.SourceFileLoader("driver_file", self.driver_file)
                 self.driver = loader.load_module()
             except ImportError:
-                raise ImportError(
-                    "Couldn't import {} as a module".format(self.driver_file)
-                )
+                raise ImportError("Couldn't import {} as a module".format(self.driver_file))
         else:
             if self.driver:
                 try:
@@ -49,9 +45,7 @@ class LocationBase:
             return None
         if not hasattr(self.driver, "get"):
             raise Exception(
-                "Your driver {} doesn't have a get() function, please fix it".format(
-                    self.driver
-                )
+                "Your driver {} doesn't have a get() function, please fix it".format(self.driver)
             )
         return getattr(self.driver, "get")(self.driver_value, self.regex)
 
@@ -60,9 +54,7 @@ class Tenant(LocationBase):
     def __init__(self):
         driver = config.tenant.driver.split(":")[0] if config.tenant.driver else None
         driver_value = (
-            ":".join(config.tenant.driver.split(":")[1:])
-            if config.tenant.driver
-            else None
+            ":".join(config.tenant.driver.split(":")[1:]) if config.tenant.driver else None
         )
         driver_file = config.tenant.driver_file
         regex = config.tenant.regex
@@ -88,11 +80,7 @@ class Datacenter(LocationBase):
 
 class Rack(LocationBase):
     def __init__(self):
-        driver = (
-            config.rack_location.driver.split(":")[0]
-            if config.rack_location.driver
-            else None
-        )
+        driver = config.rack_location.driver.split(":")[0] if config.rack_location.driver else None
         driver_value = (
             ":".join(config.rack_location.driver.split(":")[1:])
             if config.rack_location.driver
@@ -105,11 +93,7 @@ class Rack(LocationBase):
 
 class Slot(LocationBase):
     def __init__(self):
-        driver = (
-            config.slot_location.driver.split(":")[0]
-            if config.slot_location.driver
-            else None
-        )
+        driver = config.slot_location.driver.split(":")[0] if config.slot_location.driver else None
         driver_value = (
             ":".join(config.slot_location.driver.split(":")[1:])
             if config.slot_location.driver

@@ -36,8 +36,7 @@ def storecli(sub_command):
     )
     if not controllers:
         logging.error(
-            "Failed to execute command '{}'. "
-            "Ignoring data.".format(" ".join(command))
+            "Failed to execute command '{}'. " "Ignoring data.".format(" ".join(command))
         )
         return {}
     return controllers

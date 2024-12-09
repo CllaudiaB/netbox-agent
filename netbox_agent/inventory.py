@@ -101,9 +101,7 @@ class Inventory:
 
         return list(items)
 
-    def create_netbox_inventory_item(
-        self, device_id, tags, vendor, name, serial, description
-    ):
+    def create_netbox_inventory_item(self, device_id, tags, vendor, name, serial, description):
         manufacturer = self.find_or_create_manufacturer(vendor)
 
         _ = nb.dcim.inventory_items.create(
@@ -117,9 +115,7 @@ class Inventory:
         )
 
         logging.info(
-            "Creating inventory item {} {}/{} {} ".format(
-                vendor, name, serial, description
-            )
+            "Creating inventory item {} {}/{} {} ".format(vendor, name, serial, description)
         )
 
     def get_hw_motherboards(self):
@@ -136,7 +132,6 @@ class Inventory:
         return motherboards
 
     def do_netbox_motherboard(self):
-
         motherboards = self.get_hw_motherboards()
         nb_motherboards = self.get_netbox_inventory(
             device_id=self.device_id, tag=INVENTORY_TAG["motherboard"]["slug"]
@@ -242,15 +237,9 @@ class Inventory:
 
         self.raid = raid_class()
 
-        if (
-            filter_cards
-            and config.expansion_as_device
-            and self.server.own_expansion_slot()
-        ):
+        if filter_cards and config.expansion_as_device and self.server.own_expansion_slot():
             return [
-                c
-                for c in self.raid.get_controllers()
-                if c.is_external() is self.update_expansion
+                c for c in self.raid.get_controllers() if c.is_external() is self.update_expansion
             ]
         else:
             return self.raid.get_controllers()
@@ -514,11 +503,7 @@ class Inventory:
 
     def is_external_gpu(self, gpu):
         is_3d_gpu = gpu["description"].startswith("3D")
-        return (
-            self.server.is_blade()
-            and self.server.own_gpu_expansion_slot()
-            and is_3d_gpu
-        )
+        return self.server.is_blade() and self.server.own_gpu_expansion_slot() and is_3d_gpu
 
     def do_netbox_gpus(self):
         gpus = []
@@ -527,10 +512,7 @@ class Inventory:
             # Filters GPU if an expansion bay is detected:
             # The internal (VGA) GPU only goes into the blade inventory,
             # the external (3D) GPU goes into the expansion blade.
-            if (
-                config.expansion_as_device
-                and self.update_expansion ^ self.is_external_gpu(gpu)
-            ):
+            if config.expansion_as_device and self.update_expansion ^ self.is_external_gpu(gpu):
                 continue
             gpus.append(gpu)
             gpu_models.setdefault(gpu["product"], 0)

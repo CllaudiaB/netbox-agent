@@ -114,9 +114,7 @@ class LSHW:
                 return
             try:
                 nvme = json.loads(
-                    subprocess.check_output(
-                        ["nvme", "-list", "-o", "json"], encoding="utf8"
-                    )
+                    subprocess.check_output(["nvme", "-list", "-o", "json"], encoding="utf8")
                 )
                 for device in nvme["Devices"]:
                     d = {

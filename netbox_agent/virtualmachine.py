@@ -18,10 +18,7 @@ def is_vm(dmi):
         or "Xen" in bios["Version"]
         or "Google Compute Engine" in system["Product Name"]
     ) or (
-        (
-            "Amazon EC2" in system["Manufacturer"]
-            and not system["Product Name"].endswith(".metal")
-        )
+        ("Amazon EC2" in system["Manufacturer"] and not system["Product Name"].endswith(".metal"))
         or "RHEV Hypervisor" in system["Product Name"]
         or "QEMU" in system["Manufacturer"]
         or "VirtualBox" in bios["Version"]
@@ -38,15 +35,11 @@ class VirtualMachine(object):
         self.network = None
         self.device_platform = get_device_platform(config.device.platform)
 
-        self.tags = (
-            list(set(config.device.tags.split(","))) if config.device.tags else []
-        )
+        self.tags = list(set(config.device.tags.split(","))) if config.device.tags else []
         self.nb_tags = create_netbox_tags(self.tags)
 
     def get_memory(self):
-        mem_bytes = os.sysconf("SC_PAGE_SIZE") * os.sysconf(
-            "SC_PHYS_PAGES"
-        )  # e.g. 4015976448
+        mem_bytes = os.sysconf("SC_PAGE_SIZE") * os.sysconf("SC_PHYS_PAGES")  # e.g. 4015976448
         mem_gib = mem_bytes / (1024.0**2)  # e.g. 3.74
         return int(mem_gib)
 

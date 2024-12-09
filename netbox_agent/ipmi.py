@@ -63,9 +63,7 @@ class IPMI:
         try:
             ret["mac"] = _ipmi["MAC Address"]
             ret["vlan"] = (
-                int(_ipmi["802.1q VLAN ID"])
-                if _ipmi["802.1q VLAN ID"] != "Disabled"
-                else None
+                int(_ipmi["802.1q VLAN ID"]) if _ipmi["802.1q VLAN ID"] != "Disabled" else None
             )
             ip = _ipmi["IP Address"]
             netmask = _ipmi["Subnet Mask"]

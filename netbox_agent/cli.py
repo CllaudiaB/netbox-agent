@@ -26,9 +26,7 @@ def run(config):
 
     if config.virtual.enabled or is_vm(dmi):
         if not config.virtual.cluster_name:
-            raise Exception(
-                "virtual.cluster_name parameter is mandatory because it's a VM"
-            )
+            raise Exception("virtual.cluster_name parameter is mandatory because it's a VM")
         server = VirtualMachine(dmi=dmi)
     else:
         manufacturer = dmidecode.get_by_type(dmi, "Chassis")[0].get("Manufacturer")

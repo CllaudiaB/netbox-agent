@@ -38,7 +38,25 @@ dependencies = [
 tests = [
     "pytest~=8.3.3",
     "pytest-cov~=5.0.0",
+    "codecov",
     "ruff~=0.7.0",
+]
+
+[tool.ruff]
+line-length = 99
+src = ["netbox_agent", "tests"]
+output-format = "grouped"
+show-fixes = true
+
+[tool.ruff.lint]
+ignore = [
+    "F841",
+    "F841",
+    "E203",
+    "E501",
+    "F401",
+    "F821",
+    "E721",
 ]
 
 #[tool.tox]
@@ -62,24 +80,6 @@ tests = [
 #commands = [["ruff", "check"]]
 #allowlist_externals = ["ruff"]
 #
-#[tool.ruff]
-#line-length = 99
-#src = ["netbox_agent", "tests"]
-#output-format = "grouped"
-#show-fixes = true
-#
-#[tool.ruff.lint]
-#ignore = [
-#    "F841",
-#    "F841",
-#    "E203",
-#    "E501",
-#    "F401",
-#    "F821",
-#]
-#
-#[tool.ruff.format]
-#quote-style = "single"
 
 [tool.pytest.ini_options]
 testpaths = [

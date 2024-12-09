@@ -11,9 +11,7 @@ class PowerSupply:
         self.server = server
         self.netbox_server = self.server.get_netbox_server()
         if self.server.is_blade():
-            self.device_id = (
-                self.netbox_server.parent_device.id if self.netbox_server else None
-            )
+            self.device_id = self.netbox_server.parent_device.id if self.netbox_server else None
         else:
             self.device_id = self.netbox_server.id if self.netbox_server else None
 
@@ -60,9 +58,7 @@ class PowerSupply:
         delete = False
         for nb_psu in nb_psus:
             if nb_psu.name not in [x["name"] for x in psus]:
-                logging.info(
-                    "Deleting unknown locally PSU {name}".format(name=nb_psu.name)
-                )
+                logging.info("Deleting unknown locally PSU {name}".format(name=nb_psu.name))
                 nb_psu.delete()
                 delete = True
 
@@ -84,9 +80,7 @@ class PowerSupply:
 
         for psu in psus:
             if psu["name"] not in [x.name for x in nb_psus]:
-                logging.info(
-                    "Creating PSU {name} ({description}), {maximum_draw}W".format(**psu)
-                )
+                logging.info("Creating PSU {name} ({description}), {maximum_draw}W".format(**psu))
                 nb_psu = nb.dcim.power_ports.create(**psu)
 
         return True

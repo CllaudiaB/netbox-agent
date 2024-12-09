@@ -11,9 +11,7 @@ class QCTHost(ServerBase):
 
     def get_blade_slot(self):
         if self.is_blade():
-            return "Slot {}".format(
-                self.baseboard[0].get("Location In Chassis").strip()
-            )
+            return "Slot {}".format(self.baseboard[0].get("Location In Chassis").strip())
         return None
 
     def get_chassis_name(self):

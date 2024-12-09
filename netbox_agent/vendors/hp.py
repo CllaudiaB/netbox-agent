@@ -37,9 +37,7 @@ class HPHost(ServerBase):
                 }
 
             # HP ProLiant m750, m710x, m510 Server Cartridge
-            if self.product.startswith("ProLiant m") and self.product.endswith(
-                "Server Cartridge"
-            ):
+            if self.product.startswith("ProLiant m") and self.product.endswith("Server Cartridge"):
                 locator = dmidecode.get_by_type(self.dmi, 2)
                 chassis = dmidecode.get_by_type(self.dmi, 3)
                 return {
@@ -81,9 +79,7 @@ class HPHost(ServerBase):
             or self.own_disk_expansion_slot()
             or True
         ):
-            return "Bay {}".format(
-                str(int(self.hp_rack_locator["Server Bay"].strip()) + 1)
-            )
+            return "Bay {}".format(str(int(self.hp_rack_locator["Server Bay"].strip()) + 1))
         return None
 
     def get_expansion_product(self):

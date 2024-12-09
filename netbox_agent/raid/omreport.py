@@ -2,7 +2,6 @@ import logging
 import re
 import subprocess
 
-from netbox_agent.config import config
 from netbox_agent.misc import get_mount_points, get_vendor
 from netbox_agent.raid.base import Raid, RaidController
 
@@ -92,9 +91,7 @@ class OmreportController(RaidController):
                 "mount_point": ", ".join(sorted(mp)),
             }
             drives_res = omreport(
-                "storage pdisk controller={} vdisk={}".format(
-                    self.controller_index, vdisk_id
-                )
+                "storage pdisk controller={} vdisk={}".format(self.controller_index, vdisk_id)
             )
             for pdisk in [d for d in list(drives_res.values())[0]]:
                 pds[pdisk["ID"]] = vd

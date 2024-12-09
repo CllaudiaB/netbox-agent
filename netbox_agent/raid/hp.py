@@ -2,7 +2,6 @@ import logging
 import re
 import subprocess
 
-from netbox_agent.config import config
 from netbox_agent.misc import get_vendor
 from netbox_agent.raid.base import Raid, RaidController
 
@@ -175,11 +174,7 @@ class HPRaidController(RaidController):
                 "Vendor": vendor,
                 "SN": attrs.get("Serial Number", "").strip(),
                 "Size": attrs.get("Size", "").strip(),
-                "Type": (
-                    "SSD"
-                    if attrs.get("Interface Type") == "Solid State SATA"
-                    else "HDD"
-                ),
+                "Type": ("SSD" if attrs.get("Interface Type") == "Solid State SATA" else "HDD"),
                 "_src": self.__class__.__name__,
                 "custom_fields": {
                     "pd_identifier": name,
@@ -200,9 +195,7 @@ class HPRaidController(RaidController):
                 "vd_array": array,
                 "vd_size": attrs.get("Size", "").strip(),
                 "vd_consistency": attrs.get("Status", "").strip(),
-                "vd_raid_type": "RAID {}".format(
-                    attrs.get("Fault Tolerance", "N/A").strip()
-                ),
+                "vd_raid_type": "RAID {}".format(attrs.get("Fault Tolerance", "N/A").strip()),
                 "vd_device": attrs.get("LogicalDrive", "").strip(),
                 "mount_point": attrs.get("Mount Points", "").strip(),
             }
@@ -214,8 +207,9 @@ class HPRaidController(RaidController):
             ld = self.ldrives.get(array)
             if ld is None:
                 logging.error(
-                    "Failed to find array information for physical drive {}."
-                    " Ignoring.".format(name)
+                    "Failed to find array information for physical drive {}." " Ignoring.".format(
+                        name
+                    )
                 )
                 continue
             attrs["custom_fields"].update(ld)
