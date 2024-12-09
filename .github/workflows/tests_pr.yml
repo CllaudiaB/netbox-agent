@@ -24,6 +24,8 @@ jobs:
           pip install . .[tests]
       - name: Run tests
         run: ./tests.sh
+      - name: Lint with ruff
+        run: ruff check
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:

@@ -38,6 +38,7 @@ dependencies = [
 tests = [
     "pytest~=8.3.3",
     "pytest-cov~=5.0.0",
+    "ruff~=0.7.0",
 ]
 
 #[tool.tox]
@@ -79,15 +80,15 @@ tests = [
 #
 #[tool.ruff.format]
 #quote-style = "single"
-#
-#[tool.pytest.ini_options]
-#testpaths = [
-#    "tests",
-#]
-#python_files = [
-#    "*.py",
-#]
-#addopts = "-vv --showlocals --cov-report term-missing --cov-report xml --cov netbox_agent --no-cov-on-fail --tb=native -x"
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
+python_files = [
+    "*.py",
+]
+addopts = "-vv --showlocals --cov-report term-missing --cov-report xml --cov netbox_agent --no-cov-on-fail --tb=native -x"
 
 [project.scripts]
 netbox_agent = "netbox_agent.cli:main"
