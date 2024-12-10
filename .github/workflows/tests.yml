@@ -1,7 +1,3 @@
-defaults: &ruff-install
-  - name: Install Ruff
-    run: pip install ruff
-
 name: Tests
 
 on:
@@ -37,7 +33,8 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      <<: *ruff-install
+      - name: Install Ruff
+        run: pip install ruff
       - name: Ruff linter
         run: ruff check
   ruff_formatter:
@@ -45,6 +42,7 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      <<: *ruff-install
+      - name: Install Ruff
+        run: pip install ruff
       - name: Ruff formatter
         run: ruff format --diff
