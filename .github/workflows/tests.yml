@@ -29,12 +29,14 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
   ruff_linter:
+    runs-on: ubuntu-latest
     steps:
       - name: Install dependencies
         run: pip install . .[style]
       - name: Ruff linter
         run: ruff check
   ruff_formatter:
+    runs-on: ubuntu-latest
     steps:
       - name: Install dependencies
         run: pip install . .[style]
