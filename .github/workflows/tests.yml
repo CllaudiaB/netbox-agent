@@ -1,3 +1,7 @@
+defaults: &ruff-install
+  - name: Install Ruff
+    run: pip install ruff
+
 name: Tests
 
 on:
@@ -31,14 +35,16 @@ jobs:
   ruff_linter:
     runs-on: ubuntu-latest
     steps:
-      - name: Install dependencies
-        run: pip install . .[style]
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      <<: *ruff-install
       - name: Ruff linter
         run: ruff check
   ruff_formatter:
     runs-on: ubuntu-latest
     steps:
-      - name: Install dependencies
-        run: pip install . .[style]
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      <<: *ruff-install
       - name: Ruff formatter
         run: ruff format --diff
