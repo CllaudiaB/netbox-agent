@@ -31,6 +31,8 @@ jobs:
   ruff_linter:
     runs-on: ubuntu-latest
     steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
       - name: Install dependencies
         run: pip install . .[style]
       - name: Ruff linter
@@ -38,6 +40,8 @@ jobs:
   ruff_formatter:
     runs-on: ubuntu-latest
     steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
       - name: Install dependencies
         run: pip install . .[style]
       - name: Ruff formatter
