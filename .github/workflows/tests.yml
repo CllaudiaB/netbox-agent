@@ -1,3 +1,7 @@
+defaults: &ruff-install
+  - name: Install Ruff
+    run: pip install ruff
+
 name: Tests
 
 on:
