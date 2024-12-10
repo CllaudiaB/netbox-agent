@@ -5,7 +5,7 @@ on:
     types: [opened, synchronize, reopened]
 jobs:
   tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
         matrix:
           python-version: ["3.13"]
@@ -19,7 +19,7 @@ jobs:
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
       - name: Install dependencies
-        run: pip install -r pyproject.toml .[tests]
+        run: pip install . .[tests]
       - name: Run tests
         run: ./tests.sh
       - name: Upload coverage to Codecov
@@ -29,7 +29,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
   ruff_linter:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -38,7 +38,7 @@ jobs:
       - name: Ruff linter
         run: ruff check
   ruff_formatter:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
